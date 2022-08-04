@@ -6,15 +6,11 @@ import br.com.zup.edu.raceconditions.model.EventRepository;
 import br.com.zup.edu.raceconditions.model.TicketRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PessimisticLockingNewTicketServiceTest extends SpringBootIntegrationTest {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(PessimisticLockingNewTicketServiceTest.class);
 
 	@Autowired
 	private PessimisticLockingNewTicketService pessimisticLockingNewTicketService;

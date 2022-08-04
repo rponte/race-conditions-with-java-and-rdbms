@@ -1,4 +1,4 @@
-package br.com.zup.edu.raceconditions.services;
+package br.com.zup.edu.raceconditions.services.optimistic;
 
 import br.com.zup.edu.raceconditions.model.Ticket;
 import br.com.zup.edu.raceconditions.model.optimistic.Event2;
