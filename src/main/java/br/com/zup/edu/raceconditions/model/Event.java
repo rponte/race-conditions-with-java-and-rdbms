@@ -1,4 +1,4 @@
-package br.com.zup.edu.raceconditions.services.noob;
+package br.com.zup.edu.raceconditions.model;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;

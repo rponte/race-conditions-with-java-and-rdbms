@@ -1,5 +1,9 @@
-package br.com.zup.edu.raceconditions.services.noob;
+package br.com.zup.edu.raceconditions.services;
 
+import br.com.zup.edu.raceconditions.model.Event;
+import br.com.zup.edu.raceconditions.model.EventRepository;
+import br.com.zup.edu.raceconditions.model.Ticket;
+import br.com.zup.edu.raceconditions.model.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

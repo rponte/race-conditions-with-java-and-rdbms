@@ -1,9 +1,9 @@
 package br.com.zup.edu.raceconditions;
 
-import br.com.zup.edu.raceconditions.services.noob.Event;
-import br.com.zup.edu.raceconditions.services.noob.EventRepository;
-import br.com.zup.edu.raceconditions.services.noob.SimpleNewTicketService;
-import br.com.zup.edu.raceconditions.services.noob.TicketRepository;
+import br.com.zup.edu.raceconditions.model.Event;
+import br.com.zup.edu.raceconditions.model.EventRepository;
+import br.com.zup.edu.raceconditions.model.TicketRepository;
+import br.com.zup.edu.raceconditions.services.SimpleNewTicketService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
