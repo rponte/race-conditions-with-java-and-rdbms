@@ -1,6 +1,5 @@
 package br.com.zup.edu.raceconditions.model.optimistic;
 
-import br.com.zup.edu.raceconditions.model.optimistic.Event2;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
@@ -21,9 +20,9 @@ public interface Event2Repository extends JpaRepository<Event2, Long> {
            """)
     public Integer getMaxTickets(Long eventId);
 
+
     @Transactional
     @Lock(LockModeType.OPTIMISTIC_FORCE_INCREMENT)
     @Query("select e from Event2 e where e.id = :eventId")
-    public Optional<Event2> findByIdWithPessimisticLocking(Long eventId);
-
+    Optional<Event2> findByIdWithOptimisticLockingForceIncrement(Long eventId);
 }

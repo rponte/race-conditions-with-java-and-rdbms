@@ -1,6 +1,5 @@
-package br.com.zup.edu.raceconditions.services.optimistic;
+package br.com.zup.edu.raceconditions.services;
 
-import br.com.zup.edu.raceconditions.model.Ticket;
 import br.com.zup.edu.raceconditions.model.optimistic.Event2;
 import br.com.zup.edu.raceconditions.model.optimistic.Event2Repository;
 import br.com.zup.edu.raceconditions.model.optimistic.Ticket2;
@@ -21,7 +20,7 @@ public class OptimisticLockingNewTicketService {
     @Transactional
     public void buyNewTicket(Long eventId, String customerName) {
 
-        Event2 event = eventRepository.findById(eventId).orElseThrow(() -> {
+        Event2 event = eventRepository.findByIdWithOptimisticLockingForceIncrement(eventId).orElseThrow(() -> {
            return new IllegalStateException("event not found");
         });
 

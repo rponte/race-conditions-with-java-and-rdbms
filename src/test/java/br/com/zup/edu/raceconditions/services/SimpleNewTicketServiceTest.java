@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class SimpleNewTicketServiceTest extends SpringBootIntegrationTest {
@@ -39,7 +40,10 @@ class SimpleNewTicketServiceTest extends SpringBootIntegrationTest {
 			simpleNewTicketService.buyNewTicket(EVENT.getId(), customerName);
 		});
 
-		assertEquals(5, ticketRepository.countByEvent(EVENT));
+		Long ticketCount = ticketRepository.countByEvent(EVENT);
+		LOGGER.info("[?] ticketCount = {}", ticketCount);
+		assertThat(ticketCount)
+				.isLessThanOrEqualTo(5);
 	}
 
 }

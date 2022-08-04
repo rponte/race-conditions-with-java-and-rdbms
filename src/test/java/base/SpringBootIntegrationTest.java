@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 @ActiveProfiles("test")
 public abstract class SpringBootIntegrationTest {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SpringBootIntegrationTest.class);
+    protected static final Logger LOGGER = LoggerFactory.getLogger(SpringBootIntegrationTest.class);
 
     /**
      * Starts many threads concurrently to execute the <code>buyNewTicketOperation</code> at the same time.

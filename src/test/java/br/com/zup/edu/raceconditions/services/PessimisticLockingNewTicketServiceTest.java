@@ -39,7 +39,8 @@ class PessimisticLockingNewTicketServiceTest extends SpringBootIntegrationTest {
 			pessimisticLockingNewTicketService.buyNewTicket(EVENT.getId(), customerName);
 		});
 
-		assertEquals(5, ticketRepository.countByEvent(EVENT));
+		assertEquals(5,
+				ticketRepository.countByEvent(EVENT));
 	}
 
 }
