@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
 @Service
-public class SimpleNewTicketService {
+public class PessimisticLockingNewTicketService {
 
     @Autowired
     private EventRepository eventRepository;
@@ -20,7 +20,7 @@ public class SimpleNewTicketService {
     @Transactional
     public void buyNewTicket(Long eventId, String customerName) {
 
-        Event event = eventRepository.findById(eventId).orElseThrow(() -> {
+        Event event = eventRepository.findByIdWithPessimisticLocking(eventId).orElseThrow(() -> {
            return new IllegalStateException("event not found");
         });
 

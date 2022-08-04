@@ -3,6 +3,7 @@ package br.com.zup.edu.raceconditions;
 import br.com.zup.edu.raceconditions.model.Event;
 import br.com.zup.edu.raceconditions.model.EventRepository;
 import br.com.zup.edu.raceconditions.model.TicketRepository;
+import br.com.zup.edu.raceconditions.services.PessimisticLockingNewTicketService;
 import br.com.zup.edu.raceconditions.services.SimpleNewTicketService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +25,10 @@ class RaceconditionsApplicationTests {
 	private static final Logger LOGGER = LoggerFactory.getLogger(RaceconditionsApplicationTests.class);
 
 	@Autowired
-	private SimpleNewTicketService service;
+	private SimpleNewTicketService simpleNewTicketService;
+	@Autowired
+	private PessimisticLockingNewTicketService pessimisticLockingNewTicketService;
+
 	@Autowired
 	private EventRepository eventRepository;
 	@Autowired
@@ -40,16 +44,29 @@ class RaceconditionsApplicationTests {
 	}
 
 	@Test
-	void shouldBuyNoMoreThanMaxTickets() throws InterruptedException {
+	void shouldBuyNoMoreThanMaxTickets_usingSimpleNewTicketService() throws InterruptedException {
 
 		assertEquals(5,
 				eventRepository.getMaxTickets(EVENT.getId()));
 
 		doSyncAndConcurrently(10, customerName -> {
-			service.buyNewTicket(EVENT.getId(), customerName);
+			simpleNewTicketService.buyNewTicket(EVENT.getId(), customerName);
 		});
 
-		assertEquals(5, ticketRepository.count());
+		assertEquals(5, ticketRepository.countByEvent(EVENT));
+	}
+
+	@Test
+	void shouldBuyNoMoreThanMaxTickets_usingPessimisticLockingNewTicketService() throws InterruptedException {
+
+		assertEquals(5,
+				eventRepository.getMaxTickets(EVENT.getId()));
+
+		doSyncAndConcurrently(10, customerName -> {
+			pessimisticLockingNewTicketService.buyNewTicket(EVENT.getId(), customerName);
+		});
+
+		assertEquals(5, ticketRepository.countByEvent(EVENT));
 	}
 
 	private void doSyncAndConcurrently(int threadCount, Consumer<String> buyNewTicketOperation) throws InterruptedException {
@@ -66,7 +83,7 @@ class RaceconditionsApplicationTests {
 					startLatch.await();
 					buyNewTicketOperation.accept(customerName);
 				} catch (Exception e) {
-					LOGGER.error("error while buying a new ticket for " + customerName, e);
+					LOGGER.error("error while buying a new ticket for {}: {}", customerName, e.getMessage());
 				} finally {
 					endLatch.countDown();
 				}
