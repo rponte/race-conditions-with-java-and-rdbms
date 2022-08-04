@@ -4,11 +4,11 @@ import br.com.zup.edu.raceconditions.model.EventRepository;
 import br.com.zup.edu.raceconditions.model.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class BulkInsertNewTicketService {
+public class BulkInsertAndRepeatableReadNewTicketService {
 
     @Autowired
     private EventRepository eventRepository;
@@ -18,7 +18,9 @@ public class BulkInsertNewTicketService {
     /**
      * https://gist.github.com/rponte/618fdc1b10350b6551ea8f7c8ddf83d3
      */
-    @Transactional
+    @Transactional(
+        isolation = Isolation.REPEATABLE_READ
+    )
     public void buyNewTicket(Long eventId, String customerName) {
 
         int updatedRows = eventRepository.updateEventIfTheresRemainingTickets(eventId);

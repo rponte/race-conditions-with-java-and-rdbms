@@ -15,6 +15,9 @@ public class BulkInsertAndSerializableNewTicketService {
     @Autowired
     private TicketRepository ticketRepository;
 
+    /**
+     * https://gist.github.com/rponte/618fdc1b10350b6551ea8f7c8ddf83d3
+     */
     @Transactional(
         isolation = Isolation.SERIALIZABLE
     )

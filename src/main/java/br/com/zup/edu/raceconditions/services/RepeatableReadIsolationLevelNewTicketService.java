@@ -34,4 +34,5 @@ public class RepeatableReadIsolationLevelNewTicketService {
         Ticket newTicket = new Ticket(event, customerName);
         ticketRepository.save(newTicket);
     }
+
 }
