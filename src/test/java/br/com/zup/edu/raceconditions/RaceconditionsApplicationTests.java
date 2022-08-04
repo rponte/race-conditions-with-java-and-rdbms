@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.concurrent.CountDownLatch;
+import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -20,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ActiveProfiles("test")
 class RaceconditionsApplicationTests {
 
-	private static final int THREAD_COUNT = 10;
 	private static final Logger LOGGER = LoggerFactory.getLogger(RaceconditionsApplicationTests.class);
 
 	@Autowired
@@ -34,6 +34,7 @@ class RaceconditionsApplicationTests {
 
 	@BeforeEach
 	public void setUp() {
+		ticketRepository.deleteAll();
 		eventRepository.deleteAll();
 		this.EVENT = eventRepository.save(new Event("ZupCon", 5));
 	}
@@ -41,17 +42,29 @@ class RaceconditionsApplicationTests {
 	@Test
 	void shouldBuyNoMoreThanMaxTickets() throws InterruptedException {
 
-		assertEquals(5, eventRepository.getMaxTickets(EVENT.getId()));
+		assertEquals(5,
+				eventRepository.getMaxTickets(EVENT.getId()));
+
+		doSyncAndConcurrently(10, customerName -> {
+			service.buyNewTicket(EVENT.getId(), customerName);
+		});
+
+		assertEquals(5, ticketRepository.count());
+	}
+
+	private void doSyncAndConcurrently(int threadCount, Consumer<String> buyNewTicketOperation) throws InterruptedException {
 
 		CountDownLatch startLatch = new CountDownLatch(1);
-		CountDownLatch endLatch = new CountDownLatch(THREAD_COUNT);
+		CountDownLatch endLatch = new CountDownLatch(threadCount);
 
-		for (int i = 0; i < THREAD_COUNT; i++) {
+		for (int i = 0; i < threadCount; i++) {
+
 			String customerName = "Thread-" + i;
+
 			new Thread(() -> {
 				try {
 					startLatch.await();
-					service.buyNewTicket(EVENT.getId(), customerName);
+					buyNewTicketOperation.accept(customerName);
 				} catch (Exception e) {
 					LOGGER.error("error while buying a new ticket for " + customerName, e);
 				} finally {
@@ -59,10 +72,8 @@ class RaceconditionsApplicationTests {
 				}
 			}).start();
 		}
+
 		startLatch.countDown();
 		endLatch.await();
-
-		assertEquals(5, ticketRepository.count());
 	}
-
 }
