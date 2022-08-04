@@ -1,0 +1,43 @@
+##
+# Server
+##
+server:
+    error:
+        include-message: always
+        include-exception: false
+        include-stacktrace: on_param
+        include-binding-errors: always
+    port: 8080
+    servlet:
+        context-path: /raceconditions
+
+##
+# Spring and DataSource
+##
+spring:
+    output:
+        ansi:
+            enabled: ALWAYS
+    datasource:
+        driverClassName: org.h2.Driver
+        url: jdbc:h2:mem:devdb
+        username: sa
+    h2:
+        console:
+            enabled: true
+    jpa:
+        generate-ddl: true
+        show-sql: true
+        open-in-view: false
+        properties:
+            hibernate:
+                format_sql: true
+        hibernate:
+            ddl-auto: update
+            dialect: org.hibernate.dialect.H2Dialect
+    ##
+    # Jackson config
+    ##
+    jackson:
+        serialization:
+            indent_output: true
