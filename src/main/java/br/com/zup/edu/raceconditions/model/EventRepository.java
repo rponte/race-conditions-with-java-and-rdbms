@@ -40,4 +40,15 @@ public interface EventRepository extends JpaRepository<Event, Long> {
     )
     public int updateEventIfTheresRemainingTickets(Long eventId);
 
+    @Query(nativeQuery = true,
+            value = """
+                   select e.id
+                     from event e 
+                    where e.id         = :eventId
+                      and e.max_tickets > (select count(*)
+                                            from ticket t
+                                           where t.event_id = e.id)
+                   """
+    )
+    Optional<Integer> findEventByIdIfTheresRemainingTickets(Long eventId);
 }
