@@ -11,7 +11,7 @@ import javax.transaction.Transactional;
 import java.math.BigDecimal;
 
 @Service
-public class PessimisticLockingTransferService {
+public class AtomicUpdateTransferService {
 
     @Autowired
     private AccountRepository accountRepository;
@@ -21,16 +21,18 @@ public class PessimisticLockingTransferService {
     @Transactional
     public void transfer(Long fromAccountId, Long toAccountId, BigDecimal amount) {
 
-        Account fromAccount = accountRepository.findByIdWithPessimisticLocking(fromAccountId).orElseThrow(() -> {
-            throw new IllegalStateException("from-account does not exist: " + fromAccountId);
-        });
+        int updatedRows = accountRepository.debitAndValidateBalance(fromAccountId, amount);
+        if (updatedRows == 0) {
+            throw new IllegalStateException("there's not enough balance");
+        };
 
-        Account toAccount = accountRepository.findByIdWithPessimisticLocking(toAccountId).orElseThrow(() -> {
-            throw new IllegalStateException("to-account does not exist: " + toAccountId);
-        });
+        updatedRows = accountRepository.creditBalance(toAccountId, amount);
+        if (updatedRows == 0) {
+            throw new IllegalStateException("to-account does not exist: " + fromAccountId);
+        };
 
-        Transfer transfer = fromAccount.transferTo(toAccount, amount);
-        transferRepository.save(transfer);
+        transferRepository
+                .insertNewTransfer(fromAccountId, toAccountId, amount);
     }
 
 }

@@ -28,7 +28,7 @@ public class Transfer {
     private Account toAccount;
 
     @Column(nullable = false, updatable = false)
-    private BigDecimal balance;
+    private BigDecimal amount;
 
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
@@ -37,10 +37,10 @@ public class Transfer {
     @Deprecated
     public Transfer(){}
 
-    public Transfer(Account fromAccount, Account toAccount, BigDecimal balance) {
+    public Transfer(Account fromAccount, Account toAccount, BigDecimal amount) {
         this.fromAccount = fromAccount;
         this.toAccount = toAccount;
-        this.balance = balance;
+        this.amount = amount;
     }
 
     @Override
@@ -49,7 +49,7 @@ public class Transfer {
                 "id=" + id +
                 ", fromAccount=" + fromAccount +
                 ", toAccount=" + toAccount +
-                ", balance=" + balance +
+                ", amount=" + amount +
                 ", createdAt=" + createdAt +
                 '}';
     }
