@@ -49,7 +49,7 @@ class PessimisticLockingTransferServiceTest extends SpringBootIntegrationTest {
         });
 
         assertAll("transfer between accounts",
-            () -> assertEquals(5, transferRepository.count()),
+            () -> assertEquals(5, transferRepository.count(), "total of transfer"),
             () -> assertEquals(ZERO,
                     accountRepository.getBalance(FROM_ACCOUNT.getId()), "from-account balance"),
             () -> assertEquals(ONE_HUNDRED,
