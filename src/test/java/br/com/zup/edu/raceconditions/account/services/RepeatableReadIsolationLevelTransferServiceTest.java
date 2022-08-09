@@ -49,7 +49,7 @@ class RepeatableReadIsolationLevelTransferServiceTest extends SpringBootIntegrat
         });
 
         assertAll("transfer between accounts",
-            () -> assertEquals(1, transferRepository.count(), "total of transfer"),
+            () -> assertEquals(1, transferRepository.count(), "total of transfers"),
             () -> assertEquals(new BigDecimal("80.00"),
                     accountRepository.getBalance(FROM_ACCOUNT.getId()), "from-account balance"),
             () -> assertEquals(new BigDecimal("20.00"),

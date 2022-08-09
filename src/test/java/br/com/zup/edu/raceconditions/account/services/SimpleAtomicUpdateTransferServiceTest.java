@@ -49,7 +49,7 @@ class SimpleAtomicUpdateTransferServiceTest extends SpringBootIntegrationTest {
         });
 
         assertAll("transfer between accounts",
-            () -> assertEquals(5, transferRepository.count(), "total of transfer"),
+            () -> assertEquals(5, transferRepository.count(), "total of transfers"),
             () -> assertEquals(ZERO,
                     accountRepository.getBalance(FROM_ACCOUNT.getId()), "from-account balance"),
             () -> assertEquals(ONE_HUNDRED,
