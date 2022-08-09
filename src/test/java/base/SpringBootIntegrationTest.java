@@ -15,24 +15,22 @@ public abstract class SpringBootIntegrationTest {
     protected static final Logger LOGGER = LoggerFactory.getLogger(SpringBootIntegrationTest.class);
 
     /**
-     * Starts many threads concurrently to execute the <code>buyNewTicketOperation</code> at the same time.
+     * Starts many threads concurrently to execute the <code>operation</code> at the same time.
      * This method only returns after all threads have been executed.
      */
-    protected void doSyncAndConcurrently(int threadCount, Consumer<String> buyNewTicketOperation) throws InterruptedException {
+    protected void doSyncAndConcurrently(int threadCount, Consumer<String> operation) throws InterruptedException {
 
         CountDownLatch startLatch = new CountDownLatch(1);
         CountDownLatch endLatch = new CountDownLatch(threadCount);
 
         for (int i = 0; i < threadCount; i++) {
-
-            String customerName = "Thread-" + i;
-
+            String threadName = "Thread-" + i;
             new Thread(() -> {
                 try {
                     startLatch.await();
-                    buyNewTicketOperation.accept(customerName);
+                    operation.accept(threadName);
                 } catch (Exception e) {
-                    LOGGER.error("error while buying a new ticket for {}: {}", customerName, e.getMessage());
+                    LOGGER.error("error while executing operation {}: {}", threadName, e.getMessage());
                 } finally {
                     endLatch.countDown();
                 }
