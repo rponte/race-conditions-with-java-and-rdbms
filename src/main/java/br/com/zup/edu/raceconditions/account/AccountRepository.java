@@ -34,7 +34,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     @Query(nativeQuery = true,
            value = """
                    update account
-                      set balance = balance - :amount
+                      set balance = (balance - :amount)
                     where id = :accountId
                       and (balance - :amount) >= 0
                    """
@@ -46,7 +46,18 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     @Query(nativeQuery = true,
             value = """
                    update account
-                      set balance = balance + :amount
+                      set balance = (balance - :amount)
+                    where id = :accountId
+                   """
+    )
+    public int debitOnlyBalance(Long accountId, BigDecimal amount);
+
+    @Transactional
+    @Modifying
+    @Query(nativeQuery = true,
+            value = """
+                   update account
+                      set balance = (balance + :amount)
                     where id = :accountId
                    """
     )
