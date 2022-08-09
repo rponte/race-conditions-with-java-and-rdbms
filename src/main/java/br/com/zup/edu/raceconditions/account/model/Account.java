@@ -1,4 +1,4 @@
-package br.com.zup.edu.raceconditions.account;
+package br.com.zup.edu.raceconditions.account.model;
 
 import javax.persistence.*;
 import java.math.BigDecimal;

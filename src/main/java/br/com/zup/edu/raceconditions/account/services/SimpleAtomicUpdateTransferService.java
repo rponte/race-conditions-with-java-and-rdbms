@@ -1,7 +1,7 @@
 package br.com.zup.edu.raceconditions.account.services;
 
-import br.com.zup.edu.raceconditions.account.AccountRepository;
-import br.com.zup.edu.raceconditions.account.TransferRepository;
+import br.com.zup.edu.raceconditions.account.model.AccountRepository;
+import br.com.zup.edu.raceconditions.account.model.TransferRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

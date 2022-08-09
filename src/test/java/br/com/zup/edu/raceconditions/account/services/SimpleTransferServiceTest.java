@@ -1,9 +1,9 @@
 package br.com.zup.edu.raceconditions.account.services;
 
 import base.SpringBootIntegrationTest;
-import br.com.zup.edu.raceconditions.account.Account;
-import br.com.zup.edu.raceconditions.account.AccountRepository;
-import br.com.zup.edu.raceconditions.account.TransferRepository;
+import br.com.zup.edu.raceconditions.account.model.Account;
+import br.com.zup.edu.raceconditions.account.model.AccountRepository;
+import br.com.zup.edu.raceconditions.account.model.TransferRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

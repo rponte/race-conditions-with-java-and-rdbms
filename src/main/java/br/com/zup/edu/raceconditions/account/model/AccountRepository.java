@@ -1,6 +1,5 @@
-package br.com.zup.edu.raceconditions.account;
+package br.com.zup.edu.raceconditions.account.model;
 
-import br.com.zup.edu.raceconditions.tickets.model.Event;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Modifying;
