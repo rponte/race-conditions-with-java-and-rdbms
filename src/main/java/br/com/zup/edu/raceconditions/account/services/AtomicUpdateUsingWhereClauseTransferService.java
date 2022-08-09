@@ -9,7 +9,7 @@ import javax.transaction.Transactional;
 import java.math.BigDecimal;
 
 @Service
-public class AtomicUpdateTransferService {
+public class AtomicUpdateUsingWhereClauseTransferService {
 
     @Autowired
     private AccountRepository accountRepository;

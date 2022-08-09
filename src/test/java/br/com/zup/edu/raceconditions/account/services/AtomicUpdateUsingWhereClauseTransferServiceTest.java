@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class AtomicUpdateTransferServiceTest extends SpringBootIntegrationTest {
+class AtomicUpdateUsingWhereClauseTransferServiceTest extends SpringBootIntegrationTest {
 
     private static final BigDecimal ZERO = BigDecimal.ZERO.setScale(2);
     private static final BigDecimal ONE_HUNDRED = new BigDecimal(100).setScale(2);
@@ -24,7 +24,7 @@ class AtomicUpdateTransferServiceTest extends SpringBootIntegrationTest {
     private TransferRepository transferRepository;
 
     @Autowired
-    private AtomicUpdateTransferService atomicUpdateTransferService;
+    private AtomicUpdateUsingWhereClauseTransferService atomicUpdateUsingWhereClauseTransferService;
 
     private Account FROM_ACCOUNT;
     private Account TO_ACCOUNT;
@@ -44,7 +44,7 @@ class AtomicUpdateTransferServiceTest extends SpringBootIntegrationTest {
         assertEquals(ZERO, accountRepository.getBalance(TO_ACCOUNT.getId()));
 
         doSyncAndConcurrently(10, s -> {
-            atomicUpdateTransferService
+            atomicUpdateUsingWhereClauseTransferService
                     .transfer(FROM_ACCOUNT.getId(), TO_ACCOUNT.getId(), new BigDecimal("20"));
         });
 
