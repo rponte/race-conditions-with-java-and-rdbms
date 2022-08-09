@@ -15,7 +15,7 @@ public class Account {
     @Column(nullable = false, unique = true)
     private String holderName;
 
-    @Column(nullable = false)
+    @Column(nullable = false, precision = 9, scale = 2)
     private BigDecimal balance;
 
     @Deprecated
@@ -43,6 +43,10 @@ public class Account {
             throw new IllegalStateException("there's not enough balance");
         }
         this.balance = balance.subtract(amount);
+    }
+
+    public Long getId() {
+        return id;
     }
 
     private void credit(BigDecimal amount) {

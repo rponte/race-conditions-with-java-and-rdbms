@@ -25,7 +25,7 @@ public class SimpleTransferService {
             throw new IllegalStateException("from-account does not exist: " + fromAccountId);
         });
 
-        Account toAccount = accountRepository.findById(fromAccountId).orElseThrow(() -> {
+        Account toAccount = accountRepository.findById(toAccountId).orElseThrow(() -> {
             throw new IllegalStateException("to-account does not exist: " + toAccountId);
         });
 
