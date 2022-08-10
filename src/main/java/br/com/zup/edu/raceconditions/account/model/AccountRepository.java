@@ -41,15 +41,16 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     public int debitAndValidateBalance(Long accountId, BigDecimal amount);
 
     @Transactional
-    @Modifying
+//    @Modifying
     @Query(nativeQuery = true,
             value = """
                    update account
                       set balance = (balance - :amount)
                     where id = :accountId
+                returning balance
                    """
     )
-    public int debitOnlyBalance(Long accountId, BigDecimal amount);
+    public BigDecimal debitOnlyBalance(Long accountId, BigDecimal amount);
 
     @Transactional
     @Modifying

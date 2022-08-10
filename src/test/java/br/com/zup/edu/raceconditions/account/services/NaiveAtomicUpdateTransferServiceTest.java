@@ -4,18 +4,16 @@ import base.SpringBootIntegrationTest;
 import br.com.zup.edu.raceconditions.account.model.Account;
 import br.com.zup.edu.raceconditions.account.model.AccountRepository;
 import br.com.zup.edu.raceconditions.account.model.TransferRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class AtomicUpdateUsingCheckConstraintTransferServiceTest extends SpringBootIntegrationTest {
+class NaiveAtomicUpdateTransferServiceTest extends SpringBootIntegrationTest {
 
     private static final BigDecimal ZERO = BigDecimal.ZERO.setScale(2);
     private static final BigDecimal ONE_HUNDRED = new BigDecimal(100).setScale(2);
@@ -28,9 +26,6 @@ class AtomicUpdateUsingCheckConstraintTransferServiceTest extends SpringBootInte
     @Autowired
     private NaiveAtomicUpdateTransferService naiveAtomicUpdateTransferService;
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-
     private Account FROM_ACCOUNT;
     private Account TO_ACCOUNT;
 
@@ -40,21 +35,6 @@ class AtomicUpdateUsingCheckConstraintTransferServiceTest extends SpringBootInte
         accountRepository.deleteAll();
         this.FROM_ACCOUNT = accountRepository.save(new Account("Rafael Ponte", ONE_HUNDRED));
         this.TO_ACCOUNT = accountRepository.save(new Account("Jordi", ZERO));
-
-        jdbcTemplate.update(
-            """
-            ALTER TABLE account ADD CONSTRAINT balance_check CHECK (balance >= 0)
-            """
-        );
-    }
-
-    @AfterEach
-    public void cleanUp() {
-        jdbcTemplate.update(
-                """
-                ALTER TABLE account DROP CONSTRAINT balance_check
-                """
-        );
     }
 
     @Test

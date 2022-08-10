@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import static java.math.BigDecimal.ZERO;
 
 @Service
-public class SimpleAtomicUpdateTransferService {
+public class NaiveAtomicUpdateTransferService {
 
     @Autowired
     private AccountRepository accountRepository;
@@ -21,15 +21,13 @@ public class SimpleAtomicUpdateTransferService {
     @Transactional
     public void transfer(Long fromAccountId, Long toAccountId, BigDecimal amount) {
 
-        BigDecimal updatedBalance = accountRepository.debitOnlyBalance(fromAccountId, amount);
-        if (updatedBalance.compareTo(ZERO) < 0) {
+        BigDecimal balance = accountRepository.getBalance(fromAccountId);
+        if (balance.compareTo(ZERO) < 0) {
             throw new IllegalStateException("there's not enough balance");
         }
 
-        int updatedRows = accountRepository.creditBalance(toAccountId, amount);
-        if (updatedRows == 0) {
-            throw new IllegalStateException("to-account does not exist: " + toAccountId);
-        };
+        accountRepository.debitOnlyBalance(fromAccountId, amount);
+        accountRepository.creditBalance(toAccountId, amount);
 
         transferRepository
                 .insertNewTransfer(fromAccountId, toAccountId, amount);
